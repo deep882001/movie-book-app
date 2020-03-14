@@ -1,0 +1,57 @@
+# Using the node alpine image
+image: node:alpine
+
+variables:
+  PUBLIC_URL: /react-boilerplate
+# Cache node modules - speeds up future builds
+cache:
+  paths:
+    - node_modules
+
+# Name the stages involved in the pipeline
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - echo "Install dependencies ..."
+  - npm install # Install all dependencies
+
+# Job name for gitlab to recognise this results in assets for Gitlab Pages
+# https://docs.gitlab.com/ee/user/project/pages/introduction.html#gitlab-pages-requirements
+pages:
+  stage: deploy
+  script:
+    - echo "Begin Deploy ..."
+    - rm -rf public # Delete old files
+    - mv dist public # Move build files to public dir for Gitlab Pages
+    - echo "Done!"
+  artifacts:
+    paths:
+      - public # The built files for Gitlab Pages to serve
+  only:
+    - master
+
+build:
+  stage: build
+  script:
+    - echo "Start Build"
+    - npm run build # Build for prod
+    - echo "Built successfully!."
+  artifacts:
+    paths:
+      - public # The built files for Gitlab Pages to serve
+  only:
+    - master
+
+test:
+  stage: test
+  script:
+    - echo "Run Unit Tests ..."
+    - npm run test
+  artifacts:
+    paths:
+      - test
+  only:
+    - master

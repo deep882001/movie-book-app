@@ -41,7 +41,7 @@ build:
     - echo "Built successfully!."
   artifacts:
     paths:
-      - public # The built files for Gitlab Pages to serve
+      - dist # The built files for Gitlab Pages to serve
   only:
     - master
 
@@ -50,8 +50,5 @@ test:
   script:
     - echo "Run Unit Tests ..."
     - npm run test
-  artifacts:
-    paths:
-      - test
   only:
     - master

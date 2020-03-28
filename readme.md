@@ -25,6 +25,12 @@ Run Development Server without Hot Reloading
 npm run dev
 ```
 
+Run Storybook
+
+```
+npm run storybook
+```
+
 Build the project
 
 ```

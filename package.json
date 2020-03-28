@@ -1,7 +1,7 @@
 {
   "name": "react-boilerplate",
   "version": "0.1.0",
-  "description": "",
+  "description": "High Performance Web Dev Class React.js Development Boilerplate",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
@@ -17,16 +17,16 @@
     }
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/avanslaars/egghead-react-boilerplate.git"
+    "url": "git+https://gitlab.com/accwebdevclass/react-boilerplate.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/avanslaars/egghead-react-boilerplate/issues"
+    "url": "https://gitlab.com/issues/react-boilerplate/-/issues"
   },
-  "homepage": "https://github.com/avanslaars/egghead-react-boilerplate#readme",
+  "homepage": "https://gitlab.com/accwebdevclass/react-boilerplate#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",

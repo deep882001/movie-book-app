@@ -11,7 +11,7 @@
     "format": "pretty-quick",
     "lint": "eslint ./",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build:storybook": "build-storybook -c .storybook -o dist/storybook"
   },
   "husky": {
     "hooks": {

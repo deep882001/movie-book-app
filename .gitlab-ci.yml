@@ -15,7 +15,6 @@ stages:
   - deploy
 
 before_script:
-  - echo "Install dependencies ..."
   - npm install # Install all dependencies
 
 # Job name for gitlab to recognise this results in assets for Gitlab Pages
@@ -23,10 +22,8 @@ before_script:
 pages:
   stage: deploy
   script:
-    - echo "Begin Deploy ..."
     - rm -rf public # Delete old files
     - mv dist public # Move build files to public dir for Gitlab Pages
-    - echo "Done!"
   artifacts:
     paths:
       - public # The built files for Gitlab Pages to serve
@@ -36,9 +33,8 @@ pages:
 build:
   stage: build
   script:
-    - echo "Start Build"
     - npm run build # Build for prod
-    - echo "Built successfully!."
+    - npm run build:storybook
   artifacts:
     paths:
       - dist # The built files for Gitlab Pages to serve
@@ -48,7 +44,6 @@ build:
 test:
   stage: test
   script:
-    - echo "Run Unit Tests ..."
     - npm run test
   only:
     - master

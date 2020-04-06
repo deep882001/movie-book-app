@@ -1,24 +1,23 @@
 {
   "presets": [
-    ["@babel/env", {
-    "targets": [
-      "last 2 versions",
-      "not dead",
-      "not < 2%",
-      "not ie 11"
+    [
+      "@babel/env",
+      {
+        "targets": ["last 2 versions", "not dead", "not < 2%", "not ie 11"],
+        "useBuiltIns": "entry"
+      }
     ],
-    "useBuiltIns": "entry"
-  }],
-  "@babel/react"
+    "@babel/react"
   ],
   "plugins": [
+    "emotion",
     "react-hot-loader/babel",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-syntax-dynamic-import"
   ],
   "env": {
     "test": {
-      "plugins": ["dynamic-import-node"]
+      "plugins": ["emotion", "dynamic-import-node"]
     }
   }
 }

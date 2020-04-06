@@ -1,3 +1,4 @@
 module.exports = {
-  setupTestFrameworkScriptFile: '<rootDir>/testSetup.js'
+  setupTestFrameworkScriptFile: '<rootDir>/testSetup.js',
+  snapshotSerializers: ['jest-emotion']
 }

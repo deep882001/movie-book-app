@@ -18,14 +18,13 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader',
           {
-            loader: 'postcss-loader',
+            loader: 'css-loader',
             options: {
-              ident: 'postcss',
-              plugins: [require('tailwindcss'), require('autoprefixer')]
+              importLoaders: 1
             }
-          }
+          },
+          'postcss-loader'
         ],
         exclude: /node_modules/
       }
@@ -35,5 +34,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, 'src/components/')
+    }
+  }
 }

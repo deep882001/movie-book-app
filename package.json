@@ -77,6 +77,7 @@
     "@babel/polyfill": "^7.8.7",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "axios": "^0.19.2",
     "emotion-theming": "^10.0.27",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",

@@ -4,6 +4,7 @@ import React from 'react'
 import { hot } from 'react-hot-loader'
 import styled from '@emotion/styled'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import axios from 'axios'
 
 import Logo from './assets/logo.svg'
 
@@ -71,7 +72,27 @@ const About = () => (
 )
 
 class App extends React.Component {
+  state = {
+    movie: null
+  }
+
+  componentDidMount() {
+    const movieTitle = 'terminator 2'
+    const API_KEY = '341b5a16'
+    const ENDPOINT = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${escape(
+      movieTitle
+    )}`
+    axios.get(ENDPOINT).then(response => {
+      // eslint-disable-next-line
+      this.setState({
+        movie: response.data
+      })
+    })
+  }
+
   render() {
+    const { movie } = this.state
+
     return (
       <BrowserRouter>
         <div
@@ -105,6 +126,14 @@ class App extends React.Component {
               <Home />
             </Route>
           </Switch>
+          {movie && (
+            <div>
+              <h1>
+                {movie.Title} ({movie.Year})
+              </h1>
+              <img src={movie.Poster} alt={movie.Title} />
+            </div>
+          )}
         </div>
       </BrowserRouter>
     )

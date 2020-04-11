@@ -3,6 +3,7 @@ import { jsx } from '@emotion/core'
 import React from 'react'
 import { hot } from 'react-hot-loader'
 import styled from '@emotion/styled'
+import Logo from './assets/logo.svg'
 
 const Heading = styled.h1(
   {
@@ -43,6 +44,13 @@ class App extends React.Component {
           backgroundColor: theme.colors.background
         })}
       >
+        <div
+          css={{
+            width: '240px'
+          }}
+        >
+          <Logo />
+        </div>
         <Heading>High Performance Web Development!</Heading>
         <Button primary>Primary Styled Button</Button>
         <Button>Styled Button Emotion</Button>

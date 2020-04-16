@@ -2,96 +2,51 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import { hot } from 'react-hot-loader'
-import styled from '@emotion/styled'
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 
+import { BASE_URL } from './api'
+import Button from './components/Button'
+import EntryDetails from './components/EntryDetails'
+import Listing from './components/Listing'
 import Logo from './assets/logo.svg'
-
-const Heading = styled.h1(
-  {
-    fontSize: '2em',
-    ['@media (min-width: 768px)']: {
-      fontSize: '3em'
-    }
-  },
-  props => ({ color: props.color || '#111' })
-)
-
-const Button = styled.button`
-  color: ${props =>
-    props.primary ? props.theme.colors.primary : props.theme.colors.secondary};
-  font-size: 1em;
-  border: 2px solid transparent;
-  &:hover {
-    border-color: blue;
-  }
-  &:active {
-    border-style: inset;
-  }
-  @media (min-width: 768px) {
-    font-size: 1.25em;
-  }
-  @media (min-width: 1024px) {
-    font-size: 1.5em;
-  }
-  @media (min-width: 1280px) {
-    font-size: 2em;
-  }
-`
-
-const Home = () => (
-  <>
-    <Button primary>Primary Styled Button</Button>
-    <Button>Styled Button Emotion</Button>
-  </>
-)
-
-const About = () => (
-  <>
-    <p>
-      Learn the building blocks of developing performant web apps from the
-      ground up using the latest tools in the React ecosystem. You’ll learn key
-      skills like component design patterns, state management with Redux,
-      CSS-in-JS, analyzing performance in the browser, etc.
-    </p>
-    <p>
-      Prerequisites:
-      <ul>
-        <li>
-          You have a good understanding of web technologies - HTML, CSS &
-          JavaScript.
-        </li>
-        <li>
-          You want to up your game as a Frontend Engineer and start your journey
-          to building performant web apps using React.
-        </li>
-      </ul>
-    </p>
-  </>
-)
 
 class App extends React.Component {
   state = {
-    movie: null
+    listing: []
   }
 
-  componentDidMount() {
-    const movieTitle = 'terminator 2'
-    const API_KEY = '341b5a16'
-    const ENDPOINT = `https://www.omdbapi.com/?apikey=${API_KEY}&t=${escape(
-      movieTitle
-    )}`
-    axios.get(ENDPOINT).then(response => {
-      // eslint-disable-next-line
-      this.setState({
-        movie: response.data
+  load = (searchTerm = 'superman') => {
+    const CancelToken = axios.CancelToken
+    this.source = CancelToken.source()
+    const ENDPOINT = `${BASE_URL}&s=${escape(searchTerm)}`
+    axios
+      .get(ENDPOINT, {
+        cancelToken: this.source.token
       })
-    })
+      .then(response => {
+        // eslint-disable-next-line
+        this.setState({
+          listing: response.data.Search
+        })
+      })
+      .catch(function(error) {
+        if (axios.isCancel(error)) {
+          // eslint-disable-next-line
+          console.log('Request canceled', error.message)
+        } else {
+          // eslint-disable-next-line
+          console.error('Error', error.toJSON())
+        }
+      })
+  }
+
+  cancel = () => {
+    this.source.cancel('Operation canceled by the user.')
   }
 
   render() {
-    const { movie } = this.state
+    const { listing } = this.state
 
     return (
       <BrowserRouter>
@@ -101,39 +56,64 @@ class App extends React.Component {
           })}
         >
           <div
-            css={{
-              width: '240px'
-            }}
+            css={() => `
+              width: 240px;
+              margin: 0 auto;
+            `}
           >
             <Logo />
           </div>
-          <Heading>High Performance Web Development!</Heading>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-            </ul>
-          </nav>
-          <Switch>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-          {movie && (
-            <div>
-              <h1>
-                {movie.Title} ({movie.Year})
-              </h1>
-              <img src={movie.Poster} alt={movie.Title} />
-            </div>
-          )}
+          <main>
+            <Switch>
+              <Route
+                path="/"
+                exact={true}
+                render={() => {
+                  return (
+                    <div
+                      css={() => `
+                    display: flex;
+                    justify-content: center;
+                    margin: 1em auto;
+                  `}
+                    >
+                      <Link to="/">Home</Link> &nbsp;|&nbsp;{' '}
+                      <Link to="/listing">Listing</Link>
+                    </div>
+                  )
+                }}
+              />
+              <Route
+                path="/listing"
+                exact={true}
+                component={() => (
+                  <div>
+                    <Link to="/">Go To Home</Link>&nbsp;|&nbsp;{' '}
+                    <Link to="/some-random-page">Non Existent</Link>
+                    <Button
+                      onClick={() => {
+                        this.load('superman')
+                      }}
+                    >
+                      Load
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.cancel()
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Listing entries={listing} />
+                  </div>
+                )}
+              />
+              <Route path="/listing/details/:id" component={EntryDetails} />
+              <Route render={() => <h1>Sorry, this page does not exist</h1>}>
+                <Redirect to="/" />
+              </Route>
+            </Switch>
+          </main>
         </div>
       </BrowserRouter>
     )

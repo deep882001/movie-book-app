@@ -33,3 +33,22 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+/* #modal-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+} */
+
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #efefef;
+  margin: 2em;
+  padding: 2em;
+  border: 1px solid darkslategrey;
+}

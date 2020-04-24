@@ -2,13 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
-const modalRoot = document.getElementById('modal')
+const modalRoot = document.getElementById('modal-wrapper')
 
 // Let's create a Modal component that is an abstraction around
 // the portal API.
 class Modal extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    className: PropTypes.string
   }
 
   constructor(props) {
@@ -17,6 +18,7 @@ class Modal extends React.Component {
     // Modal component has its own element, we can render multiple
     // modal components into the modal container.
     this.el = document.createElement('div')
+    this.el.setAttribute('class', this.props.className)
   }
 
   componentDidMount() {

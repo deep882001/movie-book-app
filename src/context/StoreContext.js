@@ -1,10 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export const StoreContext = React.createContext()
+let StoreContext
+const { Provider, Consumer } = (StoreContext = React.createContext({
+  favorites: {}
+}))
 
-export class AppStoreProvider extends React.Component {
-  propTypes = {
+class StoreProvider extends React.Component {
+  static propTypes = {
     children: PropTypes.node
   }
 
@@ -12,26 +15,39 @@ export class AppStoreProvider extends React.Component {
     favorites: {}
   }
 
-  ENDPOINT = `https://www.omdbapi.com/?apikey=341b5a16`
+  isFavorite = imdbId => Boolean(this.state.favorites[imdbId])
+
+  toggleFavorite = movieData => {
+    if (this.state.favorites[movieData.imdbID]) {
+      const favorites = Object.assign({}, this.state.favorites)
+      delete favorites[movieData.imdbID]
+      this.setState({
+        favorites
+      })
+    } else {
+      this.setState({
+        favorites: {
+          ...this.state.favorites,
+          [movieData.imdbID]: movieData
+        }
+      })
+    }
+  }
 
   render() {
     return (
-      <StoreContext.Provider
-        store={{
+      <Provider
+        value={{
           ...this.state,
-          addToFavorite: movieData => {
-            this.setState({
-              favorites: {
-                ...this.state.favorites,
-                [movieData.imdbId]: movieData
-              }
-            })
-          },
-          ENDPOINT: this.ENDPOINT
+          toggleFavorite: this.toggleFavorite,
+          isFavorite: this.isFavorite
         }}
       >
         {this.props.children}
-      </StoreContext.Provider>
+      </Provider>
     )
   }
 }
+
+export { StoreProvider, Consumer as StoreConsumer }
+export default StoreContext

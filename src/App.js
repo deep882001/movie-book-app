@@ -3,57 +3,33 @@
 import { jsx } from '@emotion/core'
 import React from 'react'
 import { hot } from 'react-hot-loader'
-import MovieTile from './components/MovieTile'
+import MovieListing from './components/MovieListing'
+import Favorites from './components/Favorites'
+import Mouse from './components/Mouse'
 import Modal from './components/Modal'
 import Logo from './assets/logo.svg'
-
-const Heading = ({ children }) => <h3>{children}</h3>
-const Span = ({ children }) => <span>{children}</span>
-
-const withFlexContainer = WrappedComponent => props => (
-  <div style={{ display: 'flex' }}>
-    <WrappedComponent {...props} />
-  </div>
-)
-
-const withColoredText = WrappedComponent => {
-  return class extends React.Component {
-    state = {
-      color: 'red'
-    }
-
-    changeColor = () => {
-      this.setState({
-        color: 'green'
-      })
-    }
-
-    render() {
-      return (
-        <div style={{ color: this.state.color }}>
-          <WrappedComponent {...this.props} />
-          <button onClick={this.changeColor}>Change Color</button>
-        </div>
-      )
-    }
-  }
-}
-
-const FlexHeading = withFlexContainer(Heading)
-const ColoredHeading = withColoredText(FlexHeading)
-const ColoredSpan = withColoredText(Span)
+import { searchMovies } from './api'
 
 class App extends React.Component {
   state = {
-    showModal: false
+    movies: [],
+    modalVisibility: false
+  }
+
+  componentDidMount() {
+    searchMovies('superman').then(response => {
+      this.setState({
+        movies: response.data.Search.map(movie => movie.imdbID)
+      })
+    })
   }
 
   showModal = () => {
-    this.setState({ showModal: true })
+    this.setState({ modalVisibility: true })
   }
 
   hideModal = () => {
-    this.setState({ showModal: false })
+    this.setState({ modalVisibility: false })
   }
 
   render() {
@@ -63,34 +39,44 @@ class App extends React.Component {
           backgroundColor: theme.colors.background
         })}
       >
-        <div
-          css={{
-            width: '240px'
-          }}
-        >
-          <Logo />
-        </div>
-        <FlexHeading>Plain Heading</FlexHeading>
-        <ColoredHeading>Colored Heading</ColoredHeading>
-        <ColoredSpan>Colored Span</ColoredSpan>
-        <div>
-          <MovieTile imdbId="tt5817168" />
-        </div>
-        <div>
-          <button onClick={this.handleShow}>Show modal</button>
-          {this.state.showModal && (
-            <Modal>
-              <div className="modal">
-                <div>
-                  With a portal, we can render content into a different part of
-                  the DOM, as if it were any other React child.
-                </div>
-                This is being rendered inside the #modal-container div.
-                <button onClick={this.handleHide}>Hide modal</button>
+        <Mouse>
+          {({ x, y }) => (
+            <React.Fragment>
+              <div
+                css={{
+                  position: 'absolute',
+                  left: `${x}px`,
+                  top: `${y}px`,
+                  width: '240px'
+                }}
+              >
+                <Logo />
+                <Favorites />
               </div>
-            </Modal>
+              <MovieListing listing={this.state.movies} />
+              <button
+                disabled={this.state.modalVisibility}
+                onClick={this.showModal}
+              >
+                Show modal
+              </button>
+              {this.state.modalVisibility && (
+                <Modal className="modal">
+                  <div className="modal-content">
+                    <p>
+                      With a portal, we can render content into a different part
+                      of the DOM, as if it were any other React child.
+                    </p>
+                    <p>
+                      This is being rendered inside the #modal-container div.
+                    </p>
+                    <button onClick={this.hideModal}>Hide modal</button>
+                  </div>
+                </Modal>
+              )}
+            </React.Fragment>
           )}
-        </div>
+        </Mouse>
       </div>
     )
   }

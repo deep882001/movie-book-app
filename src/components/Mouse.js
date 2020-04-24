@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class Mouse extends React.Component {
-  propTypes = {
-    render: PropTypes.func.isRequired
+  static propTypes = {
+    children: PropTypes.func.isRequired
   }
 
   state = { x: 0, y: 0 }
@@ -22,7 +22,7 @@ export default class Mouse extends React.Component {
             Instead of providing a static representation of what <Mouse> renders,
             use the `render` prop to dynamically determine what to render.
           */}
-        {this.props.render(this.state)}
+        {this.props.children(this.state)}
       </div>
     )
   }

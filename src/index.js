@@ -1,6 +1,6 @@
+import 'core-js'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'core-js'
 import { ThemeProvider } from 'emotion-theming'
 import { Provider } from 'react-redux'
 

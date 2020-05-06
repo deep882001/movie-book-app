@@ -1,5 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: './src/index.js',
@@ -16,7 +19,9 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: isProd
+          ? [MiniCssExtractPlugin.loader, 'css-loader']
+          : ['style-loader', 'css-loader'],
         exclude: /node_modules/
       },
       {

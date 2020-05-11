@@ -1,4 +1,6 @@
 import {
+  ADD_FAVORITE,
+  REMOVE_FAVORITE,
   SEARCH_MOVIES_LOAD,
   SEARCH_MOVIES_SUCCESS,
   SEARCH_MOVIES_ERROR,
@@ -12,7 +14,8 @@ const initialState = {
   details: {},
   detailsError: null,
   searchKeywords: '',
-  isLoading: false
+  isLoading: false,
+  favorites: []
 }
 
 export default (state = initialState, action) => {
@@ -27,6 +30,16 @@ export default (state = initialState, action) => {
       return { ...state, detailsError: action.data }
     case SEARCH_MOVIES_LOAD:
       return { ...state, listingError: null, isLoading: action.data }
+    case ADD_FAVORITE:
+      return { ...state, favorites: [...state.favorites, action.data] }
+    case REMOVE_FAVORITE: {
+      const favorites = state.favorites.concat()
+      favorites.splice(state.favorites.indexOf(action.data), 1)
+      return {
+        ...state,
+        favorites
+      }
+    }
     default:
       return state
   }

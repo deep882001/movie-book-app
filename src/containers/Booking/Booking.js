@@ -9,6 +9,13 @@ import { TicketType, updateTickets } from './actions'
 import { fetchDetailsByID } from '../MovieListings/actions'
 
 class Booking extends React.Component {
+  static propTypes = {
+    imdbID: PropTypes.string,
+    adultTickets: PropTypes.number,
+    childTickets: PropTypes.number,
+    fetchDetailsByID: PropTypes.func
+  }
+
   componentDidMount() {
     const { fetchDetailsByID, imdbID } = this.props
     fetchDetailsByID(imdbID)
@@ -46,13 +53,6 @@ class Booking extends React.Component {
       </div>
     )
   }
-}
-
-Booking.propTypes = {
-  imdbID: PropTypes.string,
-  adultTickets: PropTypes.number,
-  childTickets: PropTypes.number,
-  fetchDetailsByID: PropTypes.func
 }
 
 function mapStateToProps(state) {

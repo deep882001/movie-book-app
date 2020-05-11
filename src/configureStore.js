@@ -3,10 +3,11 @@ import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import loggerMiddleware from './middleware/logger'
+import userTiming from './middleware/userTiming'
 import rootReducer from './reducers'
 
 export default function configureStore() {
-  const middlewares = [loggerMiddleware, thunkMiddleware]
+  const middlewares = [userTiming, loggerMiddleware, thunkMiddleware]
   const middlewareEnhancer = applyMiddleware(...middlewares)
 
   const enhancers = [middlewareEnhancer]

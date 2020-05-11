@@ -5,7 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
-  entry: './src/index.js',
+  entry: isProd
+    ? ['./src/index.js']
+    : ['react-hot-loader/patch', './src/index.js'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'app.bundle.js'

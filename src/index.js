@@ -1,6 +1,7 @@
 import 'core-js'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { Profiler } from 'react'
+import ReactDOM, { render } from 'react-dom'
+import { unstable_trace as trace } from 'scheduler/tracing'
 import { ThemeProvider } from 'emotion-theming'
 import { Provider } from 'react-redux'
 
@@ -17,11 +18,25 @@ if (process.env.NODE_ENV === 'development') {
   axe(React, ReactDOM, 1000)
 }
 
-ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </ThemeProvider>,
-  document.getElementById('app')
+const onRender = (id, phase, actualTime, baseTime, startTime, commitTime) => {
+  /* eslint-disable no-console */
+  console.log(`${id}'s ${phase} phase:`)
+  console.log(`Actual time: ${actualTime}`)
+  console.log(`Base time: ${baseTime}`)
+  console.log(`Start time: ${startTime}`)
+  console.log(`Commit time: ${commitTime}`)
+  /* eslint-enable no-console */
+}
+
+trace('initial render', performance.now(), () =>
+  render(
+    <Profiler id="Application" onRender={onRender}>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ThemeProvider>
+    </Profiler>,
+    document.getElementById('app')
+  )
 )

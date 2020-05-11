@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
-    "dev": "webpack-dev-server --open --config webpack.config.dev.js",
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
     "dev:hot": "npm run dev -- --hot",
     "test": "jest",
     "format": "pretty-quick",
@@ -64,6 +64,7 @@
     "jest": "^23.6.0",
     "jest-emotion": "^10.0.32",
     "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.11.1",
     "react-axe": "^3.4.1",

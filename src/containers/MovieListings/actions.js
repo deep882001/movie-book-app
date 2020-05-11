@@ -2,6 +2,9 @@ import axios from 'axios'
 
 import { getSearch, getByTitle, getByImdbID } from '../../api'
 
+const ADD_FAVORITE = 'ADD_FAVORITE'
+const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
+
 const SEARCH_MOVIES_LOAD = 'SEARCH_MOVIES_LOAD'
 const SEARCH_MOVIES_SUCCESS = 'SEARCH_MOVIES_SUCCESS'
 const SEARCH_MOVIES_ERROR = 'SEARCH_MOVIES_ERROR'
@@ -68,13 +71,27 @@ const setDetailsError = data => ({
   data
 })
 
+const addFavorite = data => ({
+  type: ADD_FAVORITE,
+  data
+})
+
+const removeFavorite = data => ({
+  type: REMOVE_FAVORITE,
+  data
+})
+
 export {
-  search,
+  addFavorite,
   fetchDetailsByID,
   fetchDetailsByTitle,
+  removeFavorite,
+  search,
+  ADD_FAVORITE,
+  FETCH_DETAILS_SUCCESS,
+  FETCH_DETAILS_ERROR,
+  REMOVE_FAVORITE,
   SEARCH_MOVIES_LOAD,
   SEARCH_MOVIES_SUCCESS,
-  SEARCH_MOVIES_ERROR,
-  FETCH_DETAILS_SUCCESS,
-  FETCH_DETAILS_ERROR
+  SEARCH_MOVIES_ERROR
 }

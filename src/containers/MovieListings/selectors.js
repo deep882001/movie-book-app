@@ -1,10 +1,15 @@
 import { createSelector } from 'reselect'
 
-const getMovies = state => state.listings
-const getGenre = state => state.activeGenre
+const getMovies = state => state.movies.listings
+const getFavorites = state => state.movies.favorites
 
 export const getListings = createSelector(
-  [getMovies, getGenre],
-  (movies, genre) =>
-    movies.filter(item => item.genre.toLowerCase().indexOf(genre) > -1)
+  getMovies,
+  getFavorites,
+  (movies, favorites) => {
+    return movies.map(item => ({
+      ...item,
+      favorite: favorites.indexOf(item.imdbID) > -1
+    }))
+  }
 )

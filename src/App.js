@@ -1,7 +1,7 @@
 /** @jsx jsx */
+import { hot } from 'react-hot-loader/root'
 import { jsx, css } from '@emotion/core'
 import { Suspense, lazy } from 'react'
-import { hot } from 'react-hot-loader'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
 
 const Booking = lazy(() =>
@@ -58,4 +58,4 @@ const App = () => (
   </BrowserRouter>
 )
 
-export default hot(module)(App)
+export default hot(App)
